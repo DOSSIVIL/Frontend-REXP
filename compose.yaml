@@ -1,0 +1,10 @@
+services:
+  jridgewellresolveuri:
+    image: jridgewellresolveuri
+    build:
+      context: node_modules/@jridgewell/resolve-uri
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
