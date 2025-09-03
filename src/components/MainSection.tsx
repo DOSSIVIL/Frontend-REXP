@@ -246,24 +246,42 @@ const MainSection: React.FC = () => {
           </p>
         </div>
         
-        {/* Défilement infini des logos */}
-        <div className="relative">
-          <div className="flex space-x-8 animate-scroll">
-            {[...platforms, ...platforms].map((platform, index) => (
-              <div
-                key={`${platform.name}-${index}`}
-                className="flex-shrink-0 group"
-              >
-                <div className="flex items-center space-x-3 bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-100 px-6 py-4 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 min-w-max">
-                  <div className={`${platform.color} transition-colors duration-300`}>
-                    {platform.logo}
-                  </div>
-                  <span className="font-medium text-gray-800 whitespace-nowrap">{platform.name}</span>
+        <div className="overflow-hidden">
+        <div className="flex space-x-8 scroll-logos">
+          {[...platforms, ...platforms].map((platform, index) => (
+            <div
+              key={`${platform.name}-${index}`}
+              className="flex-shrink-0 group"
+            >
+              <div className="flex items-center space-x-3 bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-100 px-6 py-4 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 min-w-max">
+                <div className={`${platform.color} transition-colors duration-300`}>
+                  {platform.logo}
                 </div>
+                <span className="font-medium text-gray-800 whitespace-nowrap">
+                  {platform.name}
+                </span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* Animation CSS */}
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .scroll-logos {
+          display: flex;
+          width: max-content;
+          animation: scroll 30s linear infinite;
+        }
+      `}</style>
       </section>
 
       {/* Section témoignages améliorée */}
@@ -711,6 +729,8 @@ const MainSection: React.FC = () => {
           </div>
         </div>
       </section>
+      
+
 
       
     </main>
