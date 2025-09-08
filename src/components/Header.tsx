@@ -30,7 +30,7 @@ const Header: React.FC = () => {
 
   const navigationItems = [
     { href: "/", icon: Home, label: "Accueil" },
-    { href: "#mentions", icon: Globe, label: "Mentions" },
+    { href: "/Mentions", icon: Globe, label: "Mentions" },
     { href: "#analytics", icon: TrendingUp, label: "Analytics" },
     { href: "#rapports", icon: FileText, label: "Rapports" }
   ];
@@ -184,7 +184,7 @@ const Header: React.FC = () => {
                 className="relative flex items-center justify-center group flex-shrink-0"
               >
                 <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-all duration-300"></div>
-                <div className="relative transform transition-all duration-500 hover:scale-110 animate-bounce">
+                <div className="relative transform transition-all duration-500 hover:scale-110 group-hover:animate-bounce">
                   <div className="flex flex-col items-center">
                     <div className="relative">
                       <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-50 blur-sm animate-pulse"></div>

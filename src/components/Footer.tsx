@@ -1,8 +1,6 @@
-// components/Footer.jsx - Version Next.js PURE (sans React Router)
 import React from 'react';
 import Link from 'next/link';
-import { Eye, Globe, TrendingUp, Users, Mail, Phone } from 'lucide-react';
-import { AboutUs } from '../components';
+import { Eye, Globe, TrendingUp, Users, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -33,16 +31,26 @@ const Footer: React.FC = () => {
               en temps réel.
             </p>
             
+            {/* Boutons avec Link */}
             <div className="flex space-x-3">
-              <button className="bg-gray-800/80 hover:bg-gray-700 p-3 rounded-xl transition-all duration-300 hover:scale-105 group">
+              <Link 
+                href="/world"
+                className="bg-gray-800/80 hover:bg-gray-700 p-3 rounded-xl transition-all duration-300 hover:scale-105 group"
+              >
                 <Globe className="h-5 w-5 group-hover:text-blue-400 transition-colors" />
-              </button>
-              <button className="bg-gray-800/80 hover:bg-gray-700 p-3 rounded-xl transition-300 hover:scale-105 group">
+              </Link>
+              <Link 
+                href="/trends"
+                className="bg-gray-800/80 hover:bg-gray-700 p-3 rounded-xl transition-all duration-300 hover:scale-105 group"
+              >
                 <TrendingUp className="h-5 w-5 group-hover:text-purple-400 transition-colors" />
-              </button>
-              <button className="bg-gray-800/80 hover:bg-gray-700 p-3 rounded-xl transition-all duration-300 hover:scale-105 group">
+              </Link>
+              <Link 
+                href="/contact"
+                className="bg-gray-800/80 hover:bg-gray-700 p-3 rounded-xl transition-all duration-300 hover:scale-105 group"
+              >
                 <Mail className="h-5 w-5 group-hover:text-green-400 transition-colors" />
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -54,10 +62,10 @@ const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-3">
               {[
-                { name: "Veille automatisée", icon: "🤖", href: "/features" },
-                { name: "Analyse de sentiment", icon: "😊", href: "/analysis" },
-                { name: "Alertes intelligentes", icon: "🔔", href: "/alerts" },
-                { name: "Rapports détaillés", icon: "📊", href: "/reports" }
+                { name: "Veille automatisée", icon: "", href: "/features" },
+                { name: "Analyse de sentiment", icon: "", href: "/analysis" },
+                { name: "Alertes intelligentes", icon: "", href: "/alerts" },
+                { name: "Rapports détaillés", icon: "", href: "/reports" }
               ].map((item, index) => (
                 <li key={index}>
                   <Link 
@@ -111,7 +119,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Copyright amélioré */}
+        {/* Copyright */}
         <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
           <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <p className="text-gray-400 text-sm">
