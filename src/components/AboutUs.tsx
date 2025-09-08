@@ -3,50 +3,30 @@ import { Users, Code, Brain, Rocket, Github, Linkedin, Mail, MapPin, Calendar, A
 
 export const metadata = {
   title: 'À propos de nous - REXP',
-  description: 'Découvrez l\'équipe passionnée derrière REXP et notre mission de révolutionner la veille médiatique',
-}
+  description: "Découvrez l'équipe passionnée derrière REXP et notre mission de révolutionner la veille médiatique",
+};
 
 const AboutUs = () => {
   const teamMembers = [
     {
-      name: "Alexandre Dubois",
-      role: "Lead Developer & Co-fondateur",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      name: "DossiviL Rivoire Vianey",
+      role: "Co-fondateur / Data Scientist  & Developer",
+      image: "/Images/moi.jpeg",
       bio: "Expert en intelligence artificielle et traitement du langage naturel avec 8+ ans d'expérience.",
-      specialities: ["IA/ML", "Python", "TensorFlow", "NLP"],
+      specialties: ["IA/ML", "Python", "TensorFlow", "NLP"],
       github: "alex-dubois",
       linkedin: "alexandre-dubois-dev",
       email: "alex@rexp.dev"
     },
     {
-      name: "Marie Chen",
-      role: "Frontend Architect & UX Lead",
+      name: "Dassi Mandjo Léa Justine",
+      role: "Co-fondatrice / Data Scientist  & Developer",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
       bio: "Passionnée par l'expérience utilisateur et les interfaces intuitives, spécialiste React/TypeScript.",
-      specialities: ["React", "TypeScript", "UX Design", "CSS"],
+      specialties: ["Next.js", "TypeScript", "Machine Learning"],
       github: "marie-chen",
       linkedin: "marie-chen-ux",
       email: "marie@rexp.dev"
-    },
-    {
-      name: "Thomas Laurent",
-      role: "Backend Engineer & DevOps",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      bio: "Architecte backend robuste et expert en infrastructure cloud, garantit la scalabilité de REXP.",
-      specialities: ["Node.js", "AWS", "Docker", "Microservices"],
-      github: "thomas-laurent",
-      linkedin: "thomas-laurent-devops",
-      email: "thomas@rexp.dev"
-    },
-    {
-      name: "Sophie Martin",
-      role: "Data Scientist & Analytics",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b2bc?w=400&h=400&fit=crop&crop=face",
-      bio: "Spécialiste en analyse de données et visualisation, transforme les données brutes en insights.",
-      specialities: ["Python", "R", "Data Viz", "Machine Learning"],
-      github: "sophie-martin",
-      linkedin: "sophie-martin-data",
-      email: "sophie@rexp.dev"
     }
   ];
 
@@ -224,7 +204,7 @@ const AboutUs = () => {
                   <p className="text-gray-600 text-sm mb-4 leading-relaxed">{member.bio}</p>
                   
                   <div className="flex flex-wrap gap-1 mb-4">
-                    {member.specialities.map((skill, skillIndex) => (
+                    {member.specialties.map((skill, skillIndex) => (
                       <span 
                         key={skillIndex}
                         className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
