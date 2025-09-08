@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, Globe, Bell, Zap, Shield, Target, ArrowRight, Play, Star, Quote, ArrowLeft, Award, Heart } from 'lucide-react';
+import { BarChart3, TrendingUp, Globe, Bell, Zap, Shield, Target, ArrowRight, Play, Star, Quote, ArrowLeft, Award, Heart, Users, Clock, CheckCircle, Sparkles, Rocket, Brain, Lock, Monitor } from 'lucide-react';
 
 const MainSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -637,102 +637,146 @@ const MainSection: React.FC = () => {
         </div>
       </section>
 
-      {/* Enhanced Dashboard Preview */}
-      <section className={`relative bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '800ms' }}>
-        {/* Animated background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}></div>
-        </div>
-
-        <div className="relative z-10 p-6 sm:p-8 lg:p-12">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 lg:mb-12">
-            <div>
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Aperçu des Données</h3>
-              <p className="text-gray-600">Tableau de bord en temps réel</p>
+      {/* Section "Pourquoi nous choisir" */}
+      <section className={`mb-16 lg:mb-20 relative overflow-hidden transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '800ms' }}>
+        {/* Background décoratif */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-purple-50/30 to-pink-50/50 rounded-3xl"></div>
+        
+        <div className="relative z-10 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 lg:p-12">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="h-4 w-4" />
+              <span>Pourquoi nous choisir</span>
             </div>
-            <button className="group mt-4 sm:mt-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
-              <span>Voir le rapport complet</span>
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
+            
+            <h3 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
+              La solution complète pour votre veille
+            </h3>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Une technologie de pointe au service de votre réputation et de votre stratégie de communication
+            </p>
           </div>
-          
-          {/* Enhanced Metrics */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-10 lg:mb-12">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "1,247", label: "Mentions totales", color: "blue", icon: Globe, percentage: 75 },
-              { value: "+18%", label: "Cette semaine", color: "green", icon: TrendingUp, percentage: 80 },
-              { value: "856K", label: "Portée totale", color: "purple", icon: Target, percentage: 85 },
-              { value: "4.2", label: "Score sentiment", color: "orange", icon: BarChart3, percentage: 90 }
-            ].map((metric, index) => (
+              {
+                icon: Brain,
+                title: "IA Avancée",
+                description: "Algorithmes de machine learning pour une analyse précise du sentiment et des tendances",
+                color: "from-blue-500 to-indigo-600",
+                stat: "99.2%",
+                statLabel: "Précision"
+              },
+              {
+                icon: Zap,
+                title: "Temps Réel",
+                description: "Surveillance continue et alertes instantanées pour ne jamais rater l'essentiel",
+                color: "from-yellow-500 to-orange-600",
+                stat: "<30s",
+                statLabel: "Délai moyen"
+              },
+              {
+                icon: Lock,
+                title: "Sécurité",
+                description: "Chiffrement de bout en bout et conformité RGPD pour protéger vos données",
+                color: "from-green-500 to-emerald-600",
+                stat: "100%",
+                statLabel: "Sécurisé"
+              },
+              {
+                icon: Users,
+                title: "Support 24/7",
+                description: "Équipe d'experts disponible pour vous accompagner à tout moment",
+                color: "from-purple-500 to-pink-600",
+                stat: "24/7",
+                statLabel: "Support"
+              }
+            ].map((feature, index) => (
               <div 
                 key={index}
-                className="group relative text-center p-4 lg:p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl hover:shadow-lg transition-all duration-500 transform hover:scale-105"
+                className="group relative bg-white/60 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/80 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 border border-gray-200/50 hover:border-white/80"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="absolute top-2 right-2 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
-                  <metric.icon className="h-5 w-5" />
-                </div>
-                <div className={`text-2xl lg:text-3xl font-bold text-${metric.color}-600 mb-2 group-hover:scale-110 transition-transform duration-300`}>
-                  {metric.value}
-                </div>
-                <div className="text-sm text-gray-600 font-medium">{metric.label}</div>
-                
-                {/* Animated progress indicator */}
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-200 to-gray-300 rounded-b-2xl">
-                  <div className={`h-full bg-gradient-to-r from-${metric.color}-400 to-${metric.color}-600 rounded-b-2xl transition-all duration-1000 group-hover:animate-pulse`} 
-                       style={{width: `${metric.percentage}%`}}></div>
+                <div className="text-center">
+                  <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${feature.color} rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                    <feature.icon className="h-7 w-7 text-white" />
+                  </div>
+                  
+                  <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-800">
+                    {feature.title}
+                  </h4>
+                  
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 group-hover:text-gray-700">
+                    {feature.description}
+                  </p>
+                  
+                  <div className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-gradient-to-r ${feature.color} text-white text-sm font-bold shadow-md`}>
+                    <span>{feature.stat}</span>
+                    <span className="text-xs opacity-80">{feature.statLabel}</span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Enhanced chart placeholder */}
-          <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 lg:p-12 text-center group hover:from-blue-50 hover:to-purple-50 transition-all duration-500">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl"></div>
+      {/* Section CTA finale */}
+      <section className={`relative bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-3xl shadow-2xl overflow-hidden transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1000ms' }}>
+        {/* Effets visuels de fond */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl -translate-y-20 translate-x-20"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-3xl translate-y-20 -translate-x-20"></div>
+        
+        <div className="relative z-10 px-8 lg:px-12 py-16 lg:py-20 text-center">
+          <div className="max-w-4xl mx-auto">
+            <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-8 animate-pulse">
+              <Rocket className="h-4 w-4" />
+              <span>Prêt à décoller ?</span>
+            </div>
             
-            <div className="relative z-10">
-              <div className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                <BarChart3 className="h-10 w-10 lg:h-12 lg:w-12 text-blue-600 group-hover:text-purple-600 transition-colors duration-300" />
+            <h3 className="text-3xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
+              Commencez votre surveillance
+              <span className="block lg:inline"> dès aujourd'hui</span>
+            </h3>
+            
+            <p className="text-xl lg:text-2xl text-blue-100 mb-10 leading-relaxed max-w-3xl mx-auto">
+              Rejoignez plus de <span className="font-bold text-white">500 entreprises</span> qui font déjà confiance à notre technologie
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 justify-center items-center mb-12">
+              <button className="group relative bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
+                <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center space-x-2">
+                  <span>Esssayé</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+              </button>
+              
+              <button className="group border-2 border-white/50 text-white px-8 py-4 rounded-2xl font-medium hover:border-white hover:bg-white/10 transition-all duration-300 flex items-center space-x-2 backdrop-blur-sm">
+                <Monitor className="h-4 w-4" />
+                <span>Planifier une démo</span>
+              </button>
+            </div>
+
+            {/* Garanties */}
+            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-blue-100">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                <span>Sans engagement</span>
               </div>
-              
-              <h4 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">Visualisations Avancées</h4>
-              <p className="text-gray-600 mb-4 max-w-md mx-auto">
-                Graphiques interactifs et tableaux de bord personnalisables pour une analyse approfondie
-              </p>
-              
-              {/* Preview features */}
-              <div className="flex flex-wrap justify-center gap-3 mb-6">
-                {['Graphiques temps réel', 'Cartes de chaleur', 'Analyses prédictives', 'Exports PDF'].map((feature, index) => (
-                  <span 
-                    key={feature}
-                    className="inline-block bg-white bg-opacity-80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    {feature}
-                  </span>
-                ))}
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                <span>Configuration en 2 minutes</span>
               </div>
-              
-              <div className="flex justify-center mb-4">
-                <button className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
-                  <Play className="h-4 w-4" />
-                  <span>Voir la démo interactive</span>
-                </button>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                <span>Support inclus</span>
               </div>
-              
-              <p className="text-sm text-gray-500 italic">
-                Connexion avec votre backend Django en cours de développement
-              </p>
             </div>
           </div>
         </div>
       </section>
-      
-
-
-      
     </main>
   );
 };

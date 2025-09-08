@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Globe, TrendingUp, FileText, Menu, X, Home, Eye, MoreHorizontal } from 'lucide-react';
@@ -293,13 +294,20 @@ const Header: React.FC = () => {
 
             {/* Boutons de connexion mobile */}
             <div className="p-4 space-y-3 border-t border-gray-200/20">
-              <button className="w-full py-3 text-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold">
+              <Link 
+                href="/Connexion"
+                className="block w-full py-3 text-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold"
+              >
                 Connexion
-              </button>
-              <button className="w-full py-3 text-center rounded-full border-2 border-blue-500 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold">
+              </Link>
+              <Link 
+                href="/Inscription"
+                className="block w-full py-3 text-center rounded-full border-2 border-blue-500 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold"
+              >
                 S'inscrire
-              </button>
+              </Link>
             </div>
+
           </div>
         </div>
       )}
