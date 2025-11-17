@@ -31,9 +31,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} 
+        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable}
                     h-screen w-screen overflow-x-hidden font-sans`}
       >
         <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -41,7 +41,7 @@ export default function RootLayout({
           <Header/>
 
           {/* Contenu principal responsive */}
-          <main className="flex-1 w-full flex flex-col items-center justify-start 
+          <main className="flex-1 w-full flex flex-col items-center justify-start
                            p-4 sm:p-6 md:p-8 lg:p-12">
             {children}
           </main>

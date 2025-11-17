@@ -135,7 +135,7 @@ const MainSection: React.FC = () => {
   // Auto-défilement des témoignages
   useEffect(() => {
     if (!isAutoPlaying) return;
-    
+
     const interval = setInterval(() => {
       setIsVisible(false);
       setTimeout(() => {
@@ -179,28 +179,28 @@ const MainSection: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50"></div>
           <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full blur-3xl opacity-20 -translate-x-20 -translate-y-20 animate-pulse"></div>
           <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full blur-3xl opacity-20 translate-x-16 translate-y-16 animate-pulse"></div>
-          
+
           <div className="relative z-10 px-6 sm:px-8 lg:px-12 py-12 lg:py-16">
             <div className="max-w-4xl mx-auto">
               <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-6 animate-bounce">
                 <Zap className="h-4 w-4" />
                 <span>Nouvelle technologie IA</span>
               </div>
-              
+
               <h2 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
-                Surveillez votre 
+                Surveillez votre
                 <span className="relative inline-block ml-3">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-pulse">
                     exposition publique
                   </span>
                 </span>
               </h2>
-              
+
               <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
-                Détectez, mesurez et analysez votre présence médiatique en temps réel sur 
+                Détectez, mesurez et analysez votre présence médiatique en temps réel sur
                 <span className="font-semibold text-gray-800"> toutes les plateformes</span> avec une précision inégalée
               </p>
-              
+
               {/* Enhanced CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 justify-center items-center">
                 <button className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
@@ -210,7 +210,7 @@ const MainSection: React.FC = () => {
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                 </button>
-                
+
                 <button className="group border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-2xl font-medium hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 flex items-center space-x-2">
                   <span>Voir la démo</span>
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -245,7 +245,7 @@ const MainSection: React.FC = () => {
             Notre système surveille automatiquement plus de 50 plateformes et sources d'information
           </p>
         </div>
-        
+
         <div className="overflow-hidden">
         <div className="flex space-x-8 scroll-logos">
           {[...platforms, ...platforms].map((platform, index) => (
@@ -299,12 +299,12 @@ const MainSection: React.FC = () => {
               <span className="text-sm font-bold text-purple-600 uppercase tracking-wider">Témoignages</span>
               <Heart className="h-6 w-6 text-pink-500 animate-pulse" />
             </div>
-            
+
             <h3 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
               Ils nous font confiance
             </h3>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Découvrez comment nos clients utilisent Radar d'Exposition pour 
+              Découvrez comment nos clients utilisent Radar d'Exposition pour
               <span className="font-semibold text-blue-600"> transformer leur stratégie </span>
               de communication
             </p>
@@ -337,7 +337,7 @@ const MainSection: React.FC = () => {
             >
               <ArrowLeft className="h-5 w-5 text-gray-600 group-hover:text-blue-600 transition-colors" />
             </button>
-            
+
             <button
               onClick={nextTestimonial}
               className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white/90 backdrop-blur-sm rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 border border-gray-200/50 group"
@@ -349,10 +349,10 @@ const MainSection: React.FC = () => {
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 lg:p-12 relative overflow-hidden">
               {/* Effet de brillance animé */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer"></div>
-              
+
               {/* Badge de couleur dynamique */}
               <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${currentData.color} rounded-t-3xl`}></div>
-              
+
               <div className={`transition-all duration-500 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
                 {/* Quote icon */}
                 <div className="flex justify-center mb-8">
@@ -360,14 +360,14 @@ const MainSection: React.FC = () => {
                     <Quote className="h-8 w-8 text-white" />
                   </div>
                 </div>
-                
+
                 {/* Témoignage */}
                 <blockquote className="text-xl lg:text-2xl text-gray-800 font-medium leading-relaxed mb-8 text-center relative">
                   <span className="text-6xl text-gray-200 absolute -top-4 -left-4 font-serif">"</span>
                   {currentData.text}
                   <span className="text-6xl text-gray-200 absolute -bottom-8 -right-4 font-serif">"</span>
                 </blockquote>
-                
+
                 {/* Profil auteur */}
                 <div className="flex items-center justify-center space-x-6">
                   <div className="relative group">
@@ -381,7 +381,7 @@ const MainSection: React.FC = () => {
                       <Award className="h-3 w-3 text-white" />
                     </div>
                   </div>
-                  
+
                   <div className="text-center lg:text-left">
                     <div className="font-bold text-xl text-gray-900 mb-1">{currentData.author}</div>
                     <div className="text-gray-600 mb-2">
@@ -389,14 +389,14 @@ const MainSection: React.FC = () => {
                       <span className="mx-2">•</span>
                       <span className="font-semibold text-blue-600">{currentData.company}</span>
                     </div>
-                    
+
                     {/* Rating stars */}
                     <div className="flex items-center justify-center lg:justify-start space-x-1 mb-2">
                       {[...Array(currentData.rating)].map((_, i) => (
                         <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                       ))}
                     </div>
-                    
+
                     {/* Impact badge */}
                     <div className={`inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gradient-to-r ${currentData.color} text-white text-sm font-medium shadow-lg`}>
                       <TrendingUp className="h-3 w-3" />
@@ -412,8 +412,8 @@ const MainSection: React.FC = () => {
               <button
                 onClick={() => setIsAutoPlaying(!isAutoPlaying)}
                 className={`p-2 rounded-full transition-all duration-300 ${
-                  isAutoPlaying 
-                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30' 
+                  isAutoPlaying
+                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
                     : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                 }`}
                 title={isAutoPlaying ? 'Pause auto-défilement' : 'Reprendre auto-défilement'}
@@ -431,7 +431,7 @@ const MainSection: React.FC = () => {
             >
               <ArrowLeft className="h-4 w-4 text-gray-600" />
             </button>
-            
+
             <div className="flex space-x-3">
               {testimonials.map((testimonial, index) => (
                 <button
@@ -456,7 +456,7 @@ const MainSection: React.FC = () => {
                       <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${testimonial.color} opacity-20 animate-pulse`}></div>
                     )}
                   </div>
-                  
+
                   {/* Tooltip au hover */}
                   <div className="absolute bottom-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
                     <div className="bg-gray-900 text-white text-xs py-2 px-3 rounded-lg whitespace-nowrap">
@@ -467,7 +467,7 @@ const MainSection: React.FC = () => {
                 </button>
               ))}
             </div>
-            
+
             <button
               onClick={nextTestimonial}
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200 transform hover:scale-110"
@@ -491,7 +491,7 @@ const MainSection: React.FC = () => {
       {/* Enhanced Feature Cards */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-16 lg:mb-20">
         {/* Collecte de mentions */}
-        <div 
+        <div
           className={`group relative bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
           style={{ transitionDelay: '200ms' }}
           onMouseEnter={() => setActiveCard(0)}
@@ -499,7 +499,7 @@ const MainSection: React.FC = () => {
         >
           {/* Gradient overlay on hover */}
           <div className={`absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 opacity-0 ${activeCard === 0 ? 'opacity-5' : ''} transition-opacity duration-300`}></div>
-          
+
           <div className="relative z-10 p-6 lg:p-8">
             <div className="flex items-center mb-6">
               <div className="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300">
@@ -507,14 +507,14 @@ const MainSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 ml-4">Collecte Multi-plateformes</h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               Surveillance automatisée des mentions sur les réseaux sociaux, médias en ligne et forums
             </p>
-            
+
             <div className="flex flex-wrap gap-2 mb-4">
               {platforms.slice(0, 6).map((platform, index) => (
-                <div 
+                <div
                   key={platform.name}
                   className="group inline-flex items-center space-x-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-purple-100 px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 cursor-pointer"
                   style={{ animationDelay: `${index * 100}ms` }}
@@ -526,7 +526,7 @@ const MainSection: React.FC = () => {
                 </div>
               ))}
             </div>
-            
+
             <div className="flex items-center text-blue-600 font-medium group-hover:translate-x-2 transition-transform duration-300">
               <span className="text-sm">En savoir plus</span>
               <ArrowRight className="h-4 w-4 ml-1" />
@@ -535,14 +535,14 @@ const MainSection: React.FC = () => {
         </div>
 
         {/* Analyse de sentiment */}
-        <div 
+        <div
           className={`group relative bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
           style={{ transitionDelay: '400ms' }}
           onMouseEnter={() => setActiveCard(1)}
           onMouseLeave={() => setActiveCard(null)}
         >
           <div className={`absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-500 opacity-0 ${activeCard === 1 ? 'opacity-5' : ''} transition-opacity duration-300`}></div>
-          
+
           <div className="relative z-10 p-6 lg:p-8">
             <div className="flex items-center mb-6">
               <div className="bg-gradient-to-br from-green-100 to-emerald-200 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300">
@@ -550,11 +550,11 @@ const MainSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 ml-4">Analyse de Sentiment</h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               Évaluation automatique du ton et du contexte des mentions avec IA avancée
             </p>
-            
+
             {/* Enhanced sentiment bars */}
             <div className="space-y-3 mb-4">
               <div className="flex items-center justify-between">
@@ -564,7 +564,7 @@ const MainSection: React.FC = () => {
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-1000 animate-pulse" style={{width: '65%'}}></div>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-yellow-700">Neutre</span>
                 <span className="text-sm font-bold text-yellow-600">25%</span>
@@ -572,7 +572,7 @@ const MainSection: React.FC = () => {
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 h-2 rounded-full transition-all duration-1000" style={{width: '25%'}}></div>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-red-700">Négatif</span>
                 <span className="text-sm font-bold text-red-600">10%</span>
@@ -581,7 +581,7 @@ const MainSection: React.FC = () => {
                 <div className="bg-gradient-to-r from-red-400 to-red-600 h-2 rounded-full transition-all duration-1000" style={{width: '10%'}}></div>
               </div>
             </div>
-            
+
             <div className="flex items-center text-green-600 font-medium group-hover:translate-x-2 transition-transform duration-300">
               <span className="text-sm">Voir l'analyse complète</span>
               <ArrowRight className="h-4 w-4 ml-1" />
@@ -590,14 +590,14 @@ const MainSection: React.FC = () => {
         </div>
 
         {/* Alertes et rapports */}
-        <div 
+        <div
           className={`group relative bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
           style={{ transitionDelay: '600ms' }}
           onMouseEnter={() => setActiveCard(2)}
           onMouseLeave={() => setActiveCard(null)}
         >
           <div className={`absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 opacity-0 ${activeCard === 2 ? 'opacity-5' : ''} transition-opacity duration-300`}></div>
-          
+
           <div className="relative z-10 p-6 lg:p-8">
             <div className="flex items-center mb-6">
               <div className="bg-gradient-to-br from-purple-100 to-pink-200 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300">
@@ -605,11 +605,11 @@ const MainSection: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 ml-4">Alertes Intelligentes</h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               Notifications en temps réel pour les pics d'activité et événements remarquables
             </p>
-            
+
             {/* Live alerts preview */}
             <div className="space-y-3 mb-4">
               <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-400">
@@ -619,7 +619,7 @@ const MainSection: React.FC = () => {
                 </div>
                 <span className="text-xs text-orange-600">il y a 2h</span>
               </div>
-              
+
               <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
@@ -628,7 +628,7 @@ const MainSection: React.FC = () => {
                 <span className="text-xs text-red-600">il y a 5h</span>
               </div>
             </div>
-            
+
             <div className="flex items-center text-purple-600 font-medium group-hover:translate-x-2 transition-transform duration-300">
               <span className="text-sm">Configurer les alertes</span>
               <ArrowRight className="h-4 w-4 ml-1" />
@@ -641,14 +641,14 @@ const MainSection: React.FC = () => {
       <section className={`mb-16 lg:mb-20 relative overflow-hidden transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '800ms' }}>
         {/* Background décoratif */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-purple-50/30 to-pink-50/50 rounded-3xl"></div>
-        
+
         <div className="relative z-10 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 lg:p-12">
           <div className="text-center mb-12">
             <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Sparkles className="h-4 w-4" />
               <span>Pourquoi nous choisir</span>
             </div>
-            
+
             <h3 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
               La solution complète pour votre veille
             </h3>
@@ -692,7 +692,7 @@ const MainSection: React.FC = () => {
                 statLabel: "Support"
               }
             ].map((feature, index) => (
-              <div 
+              <div
                 key={index}
                 className="group relative bg-white/60 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/80 transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 border border-gray-200/50 hover:border-white/80"
                 style={{ animationDelay: `${index * 150}ms` }}
@@ -701,15 +701,15 @@ const MainSection: React.FC = () => {
                   <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${feature.color} rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <feature.icon className="h-7 w-7 text-white" />
                   </div>
-                  
+
                   <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-800">
                     {feature.title}
                   </h4>
-                  
+
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 group-hover:text-gray-700">
                     {feature.description}
                   </p>
-                  
+
                   <div className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-gradient-to-r ${feature.color} text-white text-sm font-bold shadow-md`}>
                     <span>{feature.stat}</span>
                     <span className="text-xs opacity-80">{feature.statLabel}</span>
@@ -727,23 +727,23 @@ const MainSection: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20"></div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl -translate-y-20 translate-x-20"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-3xl translate-y-20 -translate-x-20"></div>
-        
+
         <div className="relative z-10 px-8 lg:px-12 py-16 lg:py-20 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium mb-8 animate-pulse">
               <Rocket className="h-4 w-4" />
               <span>Prêt à décoller ?</span>
             </div>
-            
+
             <h3 className="text-3xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
               Commencez votre surveillance
               <span className="block lg:inline"> dès aujourd'hui</span>
             </h3>
-            
+
             <p className="text-xl lg:text-2xl text-blue-100 mb-10 leading-relaxed max-w-3xl mx-auto">
               Rejoignez plus de <span className="font-bold text-white">500 entreprises</span> qui font déjà confiance à notre technologie
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 justify-center items-center mb-12">
               <button className="group relative bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
                 <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -752,7 +752,7 @@ const MainSection: React.FC = () => {
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </button>
-              
+
               <button className="group border-2 border-white/50 text-white px-8 py-4 rounded-2xl font-medium hover:border-white hover:bg-white/10 transition-all duration-300 flex items-center space-x-2 backdrop-blur-sm">
                 <Monitor className="h-4 w-4" />
                 <span>Planifier une démo</span>

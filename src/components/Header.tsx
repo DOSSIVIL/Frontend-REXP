@@ -1,26 +1,74 @@
-'use client'
-import Link from 'next/link';
+'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Search, Globe, TrendingUp, FileText, Menu, X, Home, Eye, MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import {
+  Search, Globe, TrendingUp, FileText, Menu, X, Home, Eye, MoreHorizontal, LogIn, UserPlus
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+// --- Définitions ---
+
+// Les éléments de navigation sont définis une seule fois
+const navigationItems = [
+  { href: "/", icon: Home, label: "Accueil" },
+  { href: "/Mentions", icon: Globe, label: "Mentions" },
+  { href: "#analytics", icon: TrendingUp, label: "Analytics" },
+  { href: "/rapports", icon: FileText, label: "Rapports" }
+];
+
+// --- Composant Interne : NavItem (pour la clarté) ---
+
+interface NavItemProps {
+  href: string;
+  icon: React.ElementType;
+  label: string;
+  isDarkMode: boolean;
+  onClick?: () => void;
+  isMobile?: boolean;
+}
+
+const NavItem: React.FC<NavItemProps> = ({ href, icon: Icon, label, isDarkMode, onClick, isMobile = false }) => {
+  const baseClasses = `group flex items-center px-3 py-2.5 rounded-xl font-medium transition-all duration-300 relative overflow-hidden`;
+  const colorClasses = isDarkMode
+    ? 'text-gray-300 hover:bg-slate-800/50 hover:text-white'
+    : 'text-gray-700 hover:bg-gray-50/80 hover:text-gray-900';
+  const sizeClasses = isMobile
+    ? 'space-x-3 text-base w-full'
+    : 'space-x-1 lg:space-x-2 xl:space-x-3 text-sm lg:text-base hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02]';
+  const iconSize = isMobile ? 'h-5 w-5' : 'h-4 w-4 xl:h-5 xl:w-5';
+
+  return (
+    <Link
+      href={href}
+      className={`${baseClasses} ${colorClasses} ${sizeClasses}`}
+      onClick={onClick}
+      aria-label={label}
+    >
+      {/* Effet de fond subtil au survol */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300"></div>
+
+      <Icon className={`${iconSize} group-hover:text-blue-600 transition-colors duration-300 relative z-10`} />
+      <span className="relative z-10 group-hover:text-blue-600 transition-colors duration-300">{label}</span>
+    </Link>
+  );
+};
+
+// --- Composant Principal Header ---
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
 
-  const profileRef = useRef<HTMLDivElement>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
 
   // Fermer les menus quand on clique ailleurs
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-        setIsProfileOpen(false);
-      }
+      // Fermeture du menu "Plus"
       if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
         setShowMoreMenu(false);
       }
@@ -29,112 +77,88 @@ const Header: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navigationItems = [
-    { href: "/", icon: Home, label: "Accueil" },
-    { href: "/Mentions", icon: Globe, label: "Mentions" },
-    { href: "#analytics", icon: TrendingUp, label: "Analytics" },
-    { href: "#rapports", icon: FileText, label: "Rapports" }
-  ];
+  const handleSearchFocus = useCallback((isFocused: boolean) => {
+    setSearchFocused(isFocused);
+  }, []);
+
 
   return (
     <>
-      <header className={`${isDarkMode ? 'bg-slate-900/95 border-slate-700/50' : 'bg-white/95 border-gray-200/50'} backdrop-blur-xl shadow-2xl border-b sticky top-0 z-50 transition-all duration-300`}>
+      <header className={`${isDarkMode ? 'bg-slate-900/90 border-slate-700/50' : 'bg-white/90 border-gray-200/50'}
+        backdrop-blur-lg shadow-xl border-b sticky top-0 z-50 transition-all duration-300`}
+        aria-label="En-tête de navigation principale"
+      >
         {/* Effet de gradient subtil en arrière-plan */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/20 via-purple-50/10 to-pink-50/20 opacity-30"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/10 via-purple-50/5 to-pink-50/10 opacity-40 pointer-events-none"></div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
 
-            {/* Logo - Toujours visible */}
-            <div className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0 min-w-0">
+            {/* Logo - REXP */}
+            <Link href="/" className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0 min-w-0" aria-label="Accueil REXP">
+              {/* Animation du logo */}
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl opacity-75 group-hover:opacity-100 transition duration-300 blur-sm group-hover:blur-none"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl opacity-75 group-hover:opacity-100 transition duration-300 blur-sm"></div>
                 <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 p-2 sm:p-2.5 rounded-xl transform group-hover:scale-105 transition-all duration-300">
                   <Eye className="h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow-lg" />
                 </div>
               </div>
               <div className="block">
-                <h1 className="text-lg sm:text-xl lg:text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
+                <h1 className="text-xl lg:text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm font-orbitron">
                   REXP
                 </h1>
                 <div className="h-0.5 w-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-50"></div>
               </div>
-            </div>
+            </Link>
 
-            {/* Navigation adaptative */}
-            <div className="flex items-center space-x-2 flex-1 justify-center max-w-2xl">
-              {/* Navigation desktop complète */}
-              <nav className="hidden lg:flex space-x-1">
-                {navigationItems.map(({ href, icon: Icon, label }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    className={`group flex items-center space-x-2 px-3 xl:px-4 py-2.5 rounded-xl font-medium transition-all duration-300 ${
-                      isDarkMode 
-                        ? 'text-gray-300 hover:bg-slate-800/50 hover:text-white' 
-                        : 'text-gray-700 hover:bg-gray-50/80 hover:text-gray-900'
-                    } hover:shadow-lg hover:shadow-blue-500/10 hover:scale-105 relative overflow-hidden`}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300"></div>
-                    <Icon className="h-4 w-4 xl:h-5 xl:w-5 group-hover:text-blue-600 transition-colors duration-300 relative z-10" />
-                    <span className="relative z-10 group-hover:text-blue-600 transition-colors duration-300 text-sm xl:text-base">{label}</span>
-                  </a>
+            {/* Navigation adaptative (Desktop & Tablet) */}
+            <div className="flex items-center space-x-2 flex-1 justify-center max-w-3xl">
+
+              {/* Navigation Desktop (lg+) */}
+              <nav className="hidden lg:flex space-x-1" aria-label="Navigation principale">
+                {navigationItems.map((item) => (
+                  <NavItem key={item.href} {...item} isDarkMode={isDarkMode} />
                 ))}
               </nav>
 
-              {/* Navigation tablet - Items principaux + menu trois points */}
-              <nav className="hidden md:flex lg:hidden items-center space-x-1">
-                {/* Premiers items toujours visibles */}
-                {navigationItems.slice(0, 2).map(({ href, icon: Icon, label }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    className={`group flex items-center space-x-1 px-3 py-2.5 rounded-xl font-medium transition-all duration-300 ${
-                      isDarkMode 
-                        ? 'text-gray-300 hover:bg-slate-800/50 hover:text-white' 
-                        : 'text-gray-700 hover:bg-gray-50/80 hover:text-gray-900'
-                    } hover:shadow-lg hover:shadow-blue-500/10 hover:scale-105 relative overflow-hidden`}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300"></div>
-                    <Icon className="h-4 w-4 group-hover:text-blue-600 transition-colors duration-300 relative z-10" />
-                    <span className="relative z-10 group-hover:text-blue-600 transition-colors duration-300 text-sm">{label}</span>
-                  </a>
+              {/* Navigation Tablet (md-lg) */}
+              <nav className="hidden md:flex lg:hidden items-center space-x-1" aria-label="Navigation secondaire">
+                {/* Premiers deux items toujours visibles */}
+                {navigationItems.slice(0, 2).map((item) => (
+                  <NavItem key={item.href} {...item} isDarkMode={isDarkMode} />
                 ))}
-                
+
                 {/* Menu trois points pour les items restants */}
                 <div className="relative" ref={moreMenuRef}>
                   <button
                     onClick={() => setShowMoreMenu(!showMoreMenu)}
-                    className={`group flex items-center justify-center px-3 py-2.5 rounded-xl transition-all duration-300 ${
-                      isDarkMode 
-                        ? 'text-gray-300 hover:bg-slate-800/50 hover:text-white' 
+                    className={`group p-2.5 rounded-xl transition-all duration-300 ${
+                      isDarkMode
+                        ? 'text-gray-300 hover:bg-slate-800/50 hover:text-white'
                         : 'text-gray-700 hover:bg-gray-50/80 hover:text-gray-900'
-                    } hover:shadow-lg hover:scale-105 relative overflow-hidden`}
+                    } hover:shadow-md hover:scale-105`}
+                    aria-expanded={showMoreMenu}
+                    aria-controls="more-menu-dropdown"
+                    aria-label="Plus d'options de navigation"
                   >
                     <MoreHorizontal className="h-5 w-5 group-hover:text-blue-600 transition-colors duration-300" />
                   </button>
 
                   {/* Dropdown menu */}
                   {showMoreMenu && (
-                    <div className={`absolute right-0 top-full mt-2 py-2 w-48 rounded-xl shadow-xl border transition-all duration-200 ${
-                      isDarkMode 
-                        ? 'bg-slate-800/95 border-slate-700/50' 
+                    <div id="more-menu-dropdown" className={`absolute right-0 top-full mt-2 py-2 w-48 rounded-xl shadow-2xl border transition-all duration-200 z-50 ${
+                      isDarkMode
+                        ? 'bg-slate-800/95 border-slate-700/50'
                         : 'bg-white/95 border-gray-200/50'
-                    } backdrop-blur-xl`}>
-                      {navigationItems.slice(2).map(({ href, icon: Icon, label }) => (
-                        <a
-                          key={href}
-                          href={href}
-                          className={`flex items-center space-x-3 px-4 py-3 transition-colors duration-200 ${
-                            isDarkMode 
-                              ? 'text-gray-300 hover:bg-slate-700/50 hover:text-white' 
-                              : 'text-gray-700 hover:bg-gray-50/80 hover:text-gray-900'
-                          } hover:text-blue-600`}
+                    } backdrop-blur-xl origin-top-right animate-fade-in-up`}>
+                      {navigationItems.slice(2).map((item) => (
+                        <NavItem
+                          key={item.href}
+                          {...item}
+                          isDarkMode={isDarkMode}
                           onClick={() => setShowMoreMenu(false)}
-                        >
-                          <Icon className="h-4 w-4" />
-                          <span className="text-sm">{label}</span>
-                        </a>
+                          isMobile={true} // Utilise le style mobile pour le dropdown
+                        />
                       ))}
                     </div>
                   )}
@@ -142,137 +166,150 @@ const Header: React.FC = () => {
               </nav>
             </div>
 
-            {/* Section droite */}
+            {/* Section droite (Recherche, IA, Auth) */}
             <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-              
-              {/* Barre de recherche - Cachée sur mobile */}
-              <div className={`hidden sm:flex transition-all duration-500 ${searchFocused ? 'w-64' : 'w-48'}`}>
-                <div className={`relative flex items-center w-full transition-all duration-300 ${
-                  searchFocused ? 'transform scale-105' : ''
-                }`}>
+
+              {/* Barre de recherche (Améliorée et Responsive) */}
+              <div className={`hidden sm:flex transition-all duration-500 ${searchFocused ? 'w-64 md:w-56 lg:w-64' : 'w-40 md:w-44 lg:w-48'}`}>
+                <div className={`relative flex items-center w-full`}>
+
+                  {/* Effet d'éclat au focus */}
                   <div className={`absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 blur transition-all duration-300 ${
                     searchFocused ? 'opacity-20' : ''
                   }`}></div>
-                  
+
                   <div className={`relative flex items-center ${
                     isDarkMode ? 'bg-slate-800/80' : 'bg-gray-100/80'
                   } backdrop-blur-sm rounded-full px-4 py-2 w-full transition-all duration-300 ${
-                    searchFocused 
-                      ? `ring-2 ${isDarkMode ? 'ring-blue-400/50' : 'ring-blue-500/50'} shadow-xl shadow-blue-500/20` 
-                      : 'shadow-lg'
+                    searchFocused
+                      ? `ring-2 ${isDarkMode ? 'ring-blue-400/50' : 'ring-blue-500/50'} shadow-xl shadow-blue-500/20`
+                      : 'shadow-md'
                   }`}>
                     <Search className={`h-4 w-4 mr-2 transition-all duration-300 ${
-                      searchFocused 
-                        ? 'text-blue-500 transform scale-110' 
+                      searchFocused
+                        ? 'text-blue-500 transform scale-110'
                         : isDarkMode ? 'text-gray-400' : 'text-gray-500'
                     }`} />
                     <input
-                      type="text"
+                      type="search"
                       placeholder="Rechercher..."
+                      aria-label="Recherche sur le site REXP"
                       className={`bg-transparent outline-none text-sm flex-1 ${
                         isDarkMode ? 'text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
-                      } placeholder:transition-all placeholder:duration-300`}
-                      onFocus={() => setSearchFocused(true)}
-                      onBlur={() => setSearchFocused(false)}
+                      }`}
+                      onFocus={() => handleSearchFocus(true)}
+                      onBlur={() => handleSearchFocus(false)}
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Avatar IA */}
+              {/* Avatar IA (Animation conservée) */}
               <button
                 onClick={() => setIsWelcomeOpen(true)}
-                className="relative flex items-center justify-center group flex-shrink-0"
+                className="relative flex items-center justify-center group flex-shrink-0 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500/70"
+                aria-label="Ouvrir l'assistant REXP IA"
               >
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-all duration-300"></div>
-                <div className="relative transform transition-all duration-500 hover:scale-110 group-hover:animate-bounce">
-                  <div className="flex flex-col items-center">
-                    <div className="relative">
-                      <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-50 blur-sm animate-pulse"></div>
-                      <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 8V4H8"></path>
-                          <rect width="16" height="12" x="4" y="8" rx="2"></rect>
-                          <path d="M2 14h2"></path>
-                          <path d="M20 14h2"></path>
-                          <path d="M15 13v2"></path>
-                          <path d="M9 13v2"></path>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="w-4 h-0.5 sm:w-6 sm:h-1 bg-gradient-to-r from-gray-300 to-gray-400 rounded-full mt-1 shadow-sm"></div>
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-0 group-hover:opacity-20 blur-md transition-all duration-300"></div>
+                {/* Animation conservée : group-hover:animate-bounce */}
+                <div className="relative transform transition-all duration-500 group-hover:scale-110 group-hover:animate-bounce">
+                  <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
+                    </svg>
+                    <div className="absolute bottom-0 right-0 h-2 w-2 bg-green-400 rounded-full ring-2 ring-white"></div>
                   </div>
                 </div>
               </button>
 
-              {/* Boutons de connexion - Masqués sur très petits écrans */}
-              <div className="hidden sm:flex items-center space-x-2">
-                <button className="relative group px-3 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm rounded-full overflow-hidden font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-700 to-pink-600 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-                  <span className="relative text-white drop-shadow-sm">Connexion</span>
-                </button>
-                <button className="relative group px-3 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-border">
-                  <div className="absolute inset-0 rounded-full bg-white group-hover:bg-gradient-to-r group-hover:from-blue-50 group-hover:to-purple-50 transition-all duration-300"></div>
-                  <span className="relative bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-bold">S'inscrire</span>
-                </button>
-              </div>
+             {/* Boutons de connexion/inscription */}
+             <div className="hidden sm:flex items-center space-x-2 lg:space-x-3">
+               {/* Bouton Connexion */}
+               <Link
+                 href="/Connexion"
+                 className="relative group px-4 lg:px-6 py-2 text-sm rounded-full overflow-hidden font-semibold transition-all duration-300 hover:scale-[1.05] hover:shadow-xl hover:shadow-blue-500/25 min-w-[100px] text-center"
+               >
+                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-700 to-pink-600 opacity-100 group-hover:opacity-0 transition-all duration-300"></div>
+                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                 <span className="relative text-white flex items-center justify-center space-x-1 drop-shadow-sm">
+                    <LogIn className='h-4 w-4 hidden lg:block'/>
+                    <span>Connexion</span>
+                 </span>
+               </Link>
+
+               {/* Bouton S'inscrire */}
+               <Link
+                 href="/Inscription"
+                 className="relative group px-4 lg:px-6 py-2 text-sm rounded-full font-bold transition-all duration-300 hover:scale-[1.05] hover:shadow-xl border-2 border-transparent bg-white shadow-md hover:shadow-lg min-w-[100px] text-center"
+               >
+                 <div className="absolute inset-0 rounded-full border-2 border-transparent bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                 <span className="relative bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent group-hover:text-white group-hover:opacity-0 transition-all duration-300">
+                    S'inscrire
+                 </span>
+                 <span className="absolute inset-0 flex items-center justify-center rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent text-sm font-bold">
+                    <UserPlus className='h-4 w-4 hidden lg:block mr-1'/>
+                    S'inscrire
+                 </span>
+               </Link>
+             </div>
+
 
               {/* Menu mobile toggle */}
               <button
                 className={`md:hidden p-2 rounded-xl transition-all duration-300 hover:scale-110 ${
-                  isDarkMode 
-                    ? 'text-gray-400 hover:text-white hover:bg-slate-800/50' 
-                    : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50/80'
-                } hover:shadow-lg flex-shrink-0`}
+                  isDarkMode
+                    ? 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/80'
+                } focus:outline-none focus:ring-2 focus:ring-blue-500/70 flex-shrink-0`}
                 onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Ouvrir le menu mobile"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6" />
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Menu mobile */}
+      {/* --- Menu Mobile (Off-Canvas) --- */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-[60] md:hidden">
+          {/* Overlay de fond sombre */}
           <div
             className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
           ></div>
-          
-          <div className={`absolute right-0 top-0 h-full w-80 max-w-[90vw] ${
+
+          {/* Contenu du menu coulissant */}
+          <div className={`absolute right-0 top-0 h-full w-72 max-w-[90vw] ${
             isDarkMode ? 'bg-slate-900/95' : 'bg-white/95'
-          } backdrop-blur-xl shadow-2xl transition-transform duration-300`}>
-            
+          } backdrop-blur-xl shadow-2xl transition-transform duration-500 ease-in-out transform translate-x-0`}>
+
             {/* Header du menu mobile */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200/20">
-              <h3 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Menu</h3>
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-orbitron">
+                REXP Menu
+              </h3>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-slate-800' : 'hover:bg-gray-100'} transition-colors`}
+                className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-slate-800' : 'hover:bg-gray-100'} transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/70`}
+                aria-label="Fermer le menu mobile"
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6 text-gray-700" />
               </button>
             </div>
 
             {/* Navigation mobile */}
             <nav className="p-4 space-y-2">
-              {navigationItems.map(({ href, icon: Icon, label }) => (
-                <a
-                  key={href}
-                  href={href}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-colors duration-200 ${
-                    isDarkMode 
-                      ? 'text-gray-300 hover:bg-slate-800/50 hover:text-white' 
-                      : 'text-gray-700 hover:bg-gray-50/80 hover:text-gray-900'
-                  } hover:text-blue-600`}
+              {navigationItems.map((item) => (
+                <NavItem
+                  key={item.href}
+                  {...item}
+                  isDarkMode={isDarkMode}
                   onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{label}</span>
-                </a>
+                  isMobile={true}
+                />
               ))}
             </nav>
 
@@ -280,89 +317,94 @@ const Header: React.FC = () => {
             <div className="p-4 border-t border-gray-200/20">
               <div className={`flex items-center ${
                 isDarkMode ? 'bg-slate-800/80' : 'bg-gray-100/80'
-              } rounded-full px-4 py-3`}>
-                <Search className="h-4 w-4 mr-3 text-gray-400" />
+              } rounded-full px-4 py-3 shadow-inner`}>
+                <Search className="h-5 w-5 mr-3 text-gray-400" />
                 <input
-                  type="text"
+                  type="search"
                   placeholder="Rechercher..."
-                  className={`bg-transparent outline-none text-sm flex-1 ${
+                  className={`bg-transparent outline-none text-base flex-1 ${
                     isDarkMode ? 'text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'
                   }`}
+                  aria-label="Recherche mobile"
                 />
               </div>
             </div>
 
             {/* Boutons de connexion mobile */}
             <div className="p-4 space-y-3 border-t border-gray-200/20">
-              <Link 
+              <Link
                 href="/Connexion"
-                className="block w-full py-3 text-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold"
+                className="block w-full py-3 text-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold transition hover:opacity-90 shadow-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Connexion
               </Link>
-              <Link 
+
+              <Link
                 href="/Inscription"
-                className="block w-full py-3 text-center rounded-full border-2 border-blue-500 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold"
+                className="block w-full py-3 text-center rounded-full border-2 border-blue-500 font-bold transition hover:shadow-xl hover:scale-[1.01] duration-300
+                           bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 S'inscrire
               </Link>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* Modale avec le robot */}
+      {/* --- Modale de Bienvenue IA (Animation conservée) --- */}
       {isWelcomeOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-all duration-300"
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all duration-300"
             onClick={() => setIsWelcomeOpen(false)}
+            aria-hidden="true"
           ></div>
 
-          <div className="relative z-50 transform transition-all duration-500 scale-100 opacity-100 mx-4">
-            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl opacity-20 blur-xl"></div>
-            
-            <div className="relative bg-white/90 backdrop-blur-xl p-6 sm:p-10 rounded-3xl shadow-2xl max-w-md text-center border border-white/20">
+          <div className="relative z-50 transform transition-all duration-500 scale-100 opacity-100 w-full max-w-md">
+            {/* Effet d'éclat autour de la modale */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl opacity-30 blur-xl"></div>
+
+            <div className="relative bg-white/95 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl text-center border border-white/40">
+
+              {/* Icône IA animée (Restauration de l'animation d'origine) */}
               <div className="flex flex-col items-center mb-6">
                 <div className="relative mb-4">
+                  {/* Effets de Ping conservés */}
                   <div className="absolute -inset-8 border-2 border-blue-200 rounded-full animate-ping opacity-20"></div>
                   <div className="absolute -inset-6 border-2 border-purple-200 rounded-full animate-ping opacity-30" style={{animationDelay: '0.5s'}}></div>
                   <div className="absolute -inset-4 border-2 border-pink-200 rounded-full animate-ping opacity-40" style={{animationDelay: '1s'}}></div>
-                  
+
+                  {/* Animation de Bounce conservée */}
                   <div className="relative transform animate-bounce">
                     <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-30 blur-md animate-pulse"></div>
                     <div className="relative w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 flex items-center justify-center text-white shadow-2xl">
                       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 8V4H8"></path>
-                        <rect width="16" height="12" x="4" y="8" rx="2"></rect>
-                        <path d="M2 14h2"></path>
-                        <path d="M20 14h2"></path>
-                        <path d="M15 13v2"></path>
-                        <path d="M9 13v2"></path>
+                        <path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
                       </svg>
                     </div>
                   </div>
                 </div>
                 <div className="w-12 h-2 bg-gradient-to-r from-gray-300 to-gray-400 rounded-full shadow-sm"></div>
               </div>
-              
-              <h2 className="text-xl sm:text-2xl font-black text-gray-900 mb-2">
-                Bienvenue sur <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">REXP</span> 
-                <span className="inline-block ml-2 text-2xl animate-bounce">🚀</span>
+
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2 font-orbitron">
+                Assistant REXP <span className="inline-block text-3xl animate-shake">✨</span>
               </h2>
               <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
-                Votre assistant robotique est prêt à vous aider à <span className="font-bold text-blue-600">surveiller votre exposition médiatique</span> et <span className="font-bold text-purple-600">anticiper les crises</span>.
+                Bonjour ! Je suis votre IA, prêt à vous guider pour <span className="font-semibold text-blue-600">monitorer votre image</span> et <span className="font-semibold text-purple-600">analyser les tendances</span> de votre exposition publique.
               </p>
+
               <button
                 onClick={() => setIsWelcomeOpen(false)}
-                className="relative group px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+                className="w-full relative group px-6 py-3 rounded-full font-bold text-white overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/30 focus:outline-none focus:ring-4 focus:ring-blue-500/50"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-700 to-pink-600 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-                <span className="relative flex items-center space-x-2">
-                  <span>Démarrer</span>
-                  <span className="group-hover:translate-x-1 transition-transform duration-300"></span>
+                <span className="relative flex items-center justify-center space-x-2">
+                  <span>Démarrer l'analyse</span>
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                 </span>
               </button>
             </div>
