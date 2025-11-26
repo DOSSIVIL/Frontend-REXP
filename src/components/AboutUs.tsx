@@ -270,28 +270,28 @@ const AboutUs = () => {
 
       {/* CTA Section */}
       <div className="bg-gradient-to-r from-blue-900 to-purple-900 text-white">
-        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 py-8 xs:py-12 sm:py-14 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 md:py-16">
           <div className="text-center">
-            <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 xs:mb-4 sm:mb-6">Rejoignez-nous dans cette aventure</h2>
-            <p className="text-sm xs:text-base sm:text-lg md:text-xl text-blue-100 mb-4 xs:mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Rejoignez-nous dans cette aventure</h2>
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
               Nous recrutons ! Si vous partagez notre passion pour l'innovation et la technologie, 
               nous serions ravis de vous rencontrer.
             </p>
             
-            <div className="flex flex-col xs:flex-row gap-2.5 xs:gap-3 sm:gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <a
                 href="mailto:contact@rexp.dev"
-                className="inline-flex items-center justify-center bg-white text-blue-900 px-4 xs:px-6 sm:px-8 py-2 xs:py-2.5 sm:py-3 rounded-lg xs:rounded-xl font-semibold hover:bg-blue-50 transition-colors text-xs xs:text-sm sm:text-base"
+                className="inline-flex items-center justify-center bg-white text-blue-900 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
               >
-                <Mail className="h-3.5 w-3.5 xs:h-4 xs:w-4 sm:h-5 sm:w-5 inline mr-1.5 xs:mr-2" />
-                <span>Nous contacter</span>
+                <Mail className="h-4 w-4 sm:h-5 sm:w-5 inline mr-2" />
+                <span className="text-sm sm:text-base">Nous contacter</span>
               </a>
               <button 
-                className="inline-flex items-center justify-center border-2 border-white text-white px-4 xs:px-6 sm:px-8 py-2 xs:py-2.5 sm:py-3 rounded-lg xs:rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-colors text-xs xs:text-sm sm:text-base"
+                className="inline-flex items-center justify-center border-2 border-white text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-colors"
                 aria-label="Visitez nos bureaux"
               >
-                <MapPin className="h-3.5 w-3.5 xs:h-4 xs:w-4 sm:h-5 sm:w-5 inline mr-1.5 xs:mr-2" />
-                <span>Visitez nos bureaux</span>
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 inline mr-2" />
+                <span className="text-sm sm:text-base">Visitez nos bureaux</span>
               </button>
             </div>
           </div>

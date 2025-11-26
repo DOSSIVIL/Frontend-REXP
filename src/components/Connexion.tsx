@@ -26,12 +26,16 @@ function AnimatedGlobe() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = 700;
-    canvas.height = 700;
+    // Taille adaptative selon l'écran
+    const isMobile = window.innerWidth < 640;
+    const canvasSize = isMobile ? 300 : 700;
+    
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const globeRadius = 250;
+    const globeRadius = isMobile ? 100 : 250;
     let rotation = 0;
 
     // Points représentant les grandes villes du monde
@@ -156,7 +160,7 @@ function AnimatedGlobe() {
     const connections: Array<{from: number, to: number, progress: number, platform: typeof socialPlatforms[0]}> = [];
 
     // Créer des connexions aléatoires
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < (isMobile ? 10 : 20); i++) {
       connections.push({
         from: Math.floor(Math.random() * cities.length),
         to: Math.floor(Math.random() * cities.length),
@@ -194,7 +198,7 @@ function AnimatedGlobe() {
 
       // Ajouter un contour lumineux au globe
       ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = isMobile ? 2 : 3;
       ctx.stroke();
 
       // Dessiner les continents
@@ -224,17 +228,18 @@ function AnimatedGlobe() {
 
         // Contour des continents
         ctx.strokeStyle = 'rgba(34, 197, 94, 0.8)';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = isMobile ? 1 : 1.5;
         ctx.stroke();
       });
 
-      // Dessiner les lignes de latitude et longitude
+      // Dessiner les lignes de latitude et longitude (simplifié sur mobile)
       ctx.strokeStyle = 'rgba(59, 130, 246, 0.1)';
       ctx.lineWidth = 1;
 
-      for (let lat = -90; lat <= 90; lat += 30) {
+      const step = isMobile ? 60 : 30;
+      for (let lat = -90; lat <= 90; lat += step) {
         ctx.beginPath();
-        for (let lon = -180; lon <= 180; lon += 5) {
+        for (let lon = -180; lon <= 180; lon += (isMobile ? 10 : 5)) {
           const point = project3D(lat, lon, rotation);
           if (point.z > 0) {
             if (lon === -180) ctx.moveTo(point.x, point.y);
@@ -244,33 +249,9 @@ function AnimatedGlobe() {
         ctx.stroke();
       }
 
-      for (let lon = -180; lon <= 180; lon += 30) {
+      for (let lon = -180; lon <= 180; lon += step) {
         ctx.beginPath();
-        for (let lat = -90; lat <= 90; lat += 5) {
-          const point = project3D(lat, lon, rotation);
-          if (point.z > 0) {
-            if (lat === -90) ctx.moveTo(point.x, point.y);
-            else ctx.lineTo(point.x, point.y);
-          }
-        }
-        ctx.stroke();
-      }
-
-      for (let lat = -90; lat <= 90; lat += 30) {
-        ctx.beginPath();
-        for (let lon = -180; lon <= 180; lon += 5) {
-          const point = project3D(lat, lon, rotation);
-          if (point.z > 0) {
-            if (lon === -180) ctx.moveTo(point.x, point.y);
-            else ctx.lineTo(point.x, point.y);
-          }
-        }
-        ctx.stroke();
-      }
-
-      for (let lon = -180; lon <= 180; lon += 30) {
-        ctx.beginPath();
-        for (let lat = -90; lat <= 90; lat += 5) {
+        for (let lat = -90; lat <= 90; lat += (isMobile ? 10 : 5)) {
           const point = project3D(lat, lon, rotation);
           if (point.z > 0) {
             if (lat === -90) ctx.moveTo(point.x, point.y);
@@ -295,8 +276,8 @@ function AnimatedGlobe() {
           lineGradient.addColorStop(1, `${conn.platform.color}40`);
 
           ctx.strokeStyle = lineGradient;
-          ctx.lineWidth = 2;
-          ctx.shadowBlur = 10;
+          ctx.lineWidth = isMobile ? 1.5 : 2;
+          ctx.shadowBlur = isMobile ? 5 : 10;
           ctx.shadowColor = conn.platform.color;
           ctx.beginPath();
           ctx.moveTo(fromPoint.x, fromPoint.y);
@@ -311,22 +292,23 @@ function AnimatedGlobe() {
           const z = fromPoint.z + (toPoint.z - fromPoint.z) * progress;
 
           if (z > 0) {
+            const iconSize = isMobile ? 10 : 16;
             // Cercle de fond avec couleur de la plateforme
             ctx.beginPath();
-            ctx.arc(x, y, 16, 0, Math.PI * 2);
+            ctx.arc(x, y, iconSize, 0, Math.PI * 2);
             ctx.fillStyle = conn.platform.color;
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = isMobile ? 8 : 15;
             ctx.shadowColor = conn.platform.color;
             ctx.fill();
             ctx.shadowBlur = 0;
 
             // Bordure blanche
             ctx.strokeStyle = 'white';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = isMobile ? 1.5 : 2;
             ctx.stroke();
 
             // Icône emoji
-            ctx.font = 'bold 18px Arial';
+            ctx.font = isMobile ? 'bold 12px Arial' : 'bold 18px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(conn.platform.icone, x, y);
@@ -347,20 +329,21 @@ function AnimatedGlobe() {
       cities.forEach(city => {
         const point = project3D(city.lat, city.lon, rotation);
         if (point.z > 0) {
+          const citySize = isMobile ? 3 : 5;
           // Point principal
           ctx.fillStyle = 'rgba(59, 130, 246, 1)';
-          ctx.shadowBlur = 10;
+          ctx.shadowBlur = isMobile ? 5 : 10;
           ctx.shadowColor = 'rgba(59, 130, 246, 0.8)';
           ctx.beginPath();
-          ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+          ctx.arc(point.x, point.y, citySize, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
 
           // Effet de pulse
           ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
-          ctx.lineWidth = 2;
+          ctx.lineWidth = isMobile ? 1.5 : 2;
           ctx.beginPath();
-          ctx.arc(point.x, point.y, 10 + Math.sin(Date.now() / 500) * 3, 0, Math.PI * 2);
+          ctx.arc(point.x, point.y, (isMobile ? 8 : 10) + Math.sin(Date.now() / 500) * (isMobile ? 2 : 3), 0, Math.PI * 2);
           ctx.stroke();
         }
       });
@@ -375,8 +358,8 @@ function AnimatedGlobe() {
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full"
-      style={{ maxWidth: '700px', maxHeight: '700px' }}
+      className="w-full h-full max-w-full"
+      style={{ maxWidth: '100%', maxHeight: '100%' }}
     />
   );
 }
@@ -411,101 +394,108 @@ export default function ConnexionPage() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4">
-      <div className="w-full max-w-7xl mx-auto bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-gray-100 dark:border-slate-700">
+    <div className="flex items-center justify-center w-full min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-2 xs:p-3 sm:p-4">
+      <div className="w-full max-w-7xl mx-auto bg-white dark:bg-slate-800 rounded-2xl xs:rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-gray-100 dark:border-slate-700">
 
         {/* Partie Image avec Globe 3D (Gauche) */}
-        <div className="relative lg:w-2/5 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-8 lg:p-12 overflow-hidden order-2 lg:order-1">
+        <div className="relative lg:w-2/5 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-4 xs:p-6 sm:p-8 lg:p-12 overflow-hidden order-2 lg:order-1 min-h-[300px] xs:min-h-[400px] sm:min-h-[500px]">
 
           {/* Effet de particules en arrière-plan */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute w-96 h-96 -top-48 -left-48 bg-blue-600/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-purple-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-            <div className="absolute w-64 h-64 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute w-64 xs:w-96 h-64 xs:h-96 -top-32 xs:-top-48 -left-32 xs:-left-48 bg-blue-600/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute w-64 xs:w-96 h-64 xs:h-96 -bottom-32 xs:-bottom-48 -right-32 xs:-right-48 bg-purple-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute w-48 xs:w-64 h-48 xs:h-64 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
           </div>
 
           {/* Grille de fond technologique */}
           <div className="absolute inset-0 opacity-10" style={{
             backgroundImage: 'linear-gradient(rgba(59, 130, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.3) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
+            backgroundSize: '30px 30px'
           }}></div>
 
           {/* Contenu */}
-          <div className="relative z-10 text-white text-center space-y-6">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
-              Bienvenue chez <br />
-              <div className="block">
-              <span className="text-xl lg:text-6xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm font-orbitron">
-                REXP
-              </span>
-              <div className="h-0.5 w-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-50"></div>
-            </div>
+          <div className="relative z-10 text-white text-center space-y-3 xs:space-y-4 sm:space-y-6 w-full px-2">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-2 xs:mb-3 sm:mb-4">
+              Bienvenue chez <br className="hidden xs:block" />
+              <div className="block mt-1 xs:mt-2">
+                <span className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl xl:text-6xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm font-orbitron">
+                  REXP
+                </span>
+                <div className="h-0.5 xs:h-1 w-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-50 mt-1"></div>
+              </div>
             </h1>
-            <p className="text-lg sm:text-xl text-gray-300 max-w-md mx-auto px-4">
+            <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-gray-300 max-w-md mx-auto px-2 xs:px-4 leading-relaxed">
               Connectez-vous au monde entier. Une plateforme qui unit les réseaux sociaux et facilite la surveillance globale.
             </p>
 
             {/* Globe 3D animé */}
-            <div className="flex items-center justify-center mt-8 mb-6">
-              <AnimatedGlobe />
+            <div className="flex items-center justify-center mt-4 xs:mt-6 sm:mt-8 mb-4 xs:mb-6">
+              <div className="w-[200px] h-[200px] xs:w-[250px] xs:h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px]">
+                <AnimatedGlobe />
+              </div>
             </div>
 
             {/* Statistiques */}
-            <div className="grid grid-cols-3 gap-4 px-4">
-              <div className="text-center bg-slate-800/50 backdrop-blur-sm rounded-xl p-3 border border-blue-500/20">
-                <div className="text-3xl font-bold text-blue-400">150+</div>
-                <div className="text-sm text-gray-400">Pays</div>
+            <div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4 px-2 xs:px-4">
+              <div className="text-center bg-slate-800/50 backdrop-blur-sm rounded-lg xs:rounded-xl p-2 xs:p-3 border border-blue-500/20">
+                <div className="text-xl xs:text-2xl sm:text-3xl font-bold text-blue-400">150+</div>
+                <div className="text-xs xs:text-sm text-gray-400">Pays</div>
               </div>
-              <div className="text-center bg-slate-800/50 backdrop-blur-sm rounded-xl p-3 border border-purple-500/20">
-                <div className="text-3xl font-bold text-purple-400">10M+</div>
-                <div className="text-sm text-gray-400">Utilisateurs</div>
+              <div className="text-center bg-slate-800/50 backdrop-blur-sm rounded-lg xs:rounded-xl p-2 xs:p-3 border border-purple-500/20">
+                <div className="text-xl xs:text-2xl sm:text-3xl font-bold text-purple-400">10M+</div>
+                <div className="text-xs xs:text-sm text-gray-400">Utilisateurs</div>
               </div>
-              <div className="text-center bg-slate-800/50 backdrop-blur-sm rounded-xl p-3 border border-cyan-500/20">
-                <div className="text-3xl font-bold text-cyan-400">24/7</div>
-                <div className="text-sm text-gray-400">Support</div>
+              <div className="text-center bg-slate-800/50 backdrop-blur-sm rounded-lg xs:rounded-xl p-2 xs:p-3 border border-cyan-500/20">
+                <div className="text-xl xs:text-2xl sm:text-3xl font-bold text-cyan-400">24/7</div>
+                <div className="text-xs xs:text-sm text-gray-400">Support</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Partie Formulaire (Droite) */}
-        <div className="lg:w-3/5 p-6 sm:p-8 lg:p-12 flex items-center justify-center order-1 lg:order-2">
+        <div className="lg:w-3/5 p-4 xs:p-6 sm:p-8 lg:p-12 flex items-center justify-center order-1 lg:order-2">
           <div className="w-full max-w-md">
             <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-3xl opacity-20 blur-xl"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl xs:rounded-3xl opacity-20 blur-xl"></div>
 
-              <div className="relative bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700">
+              <div className="relative bg-white dark:bg-slate-800 p-4 xs:p-6 sm:p-8 rounded-2xl xs:rounded-3xl shadow-xl border border-gray-100 dark:border-slate-700">
 
                 {/* Header */}
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center mb-4">
-                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-xl">
-                      <User className="h-8 w-8 text-white" />
+                <div className="text-center mb-4 xs:mb-6">
+                  <div className="inline-flex items-center justify-center mb-3 xs:mb-4">
+                    <div className="relative w-14 h-14 xs:w-16 xs:h-16 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-xl">
+                      <User className="h-7 w-7 xs:h-8 xs:w-8 text-white" />
                     </div>
                   </div>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
+                  <h2 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
                     Connectez-vous
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-300">Accédez à votre compte REXP</p>
+                  <p className="text-sm xs:text-base text-gray-600 dark:text-gray-300 mt-1 xs:mt-2">Accédez à votre compte REXP</p>
                 </div>
 
                 {/* Erreur */}
                 {error && (
-                  <div className="p-4 mb-6 text-sm text-red-800 dark:text-red-200 bg-red-50 dark:bg-red-900/20 rounded-xl border-l-4 border-red-500">
-                    {error}
+                  <div className="p-3 xs:p-4 mb-4 xs:mb-6 text-sm xs:text-base text-red-800 dark:text-red-200 bg-red-50 dark:bg-red-900/20 rounded-lg xs:rounded-xl border-l-4 border-red-500">
+                    <div className="flex items-start">
+                      <svg className="h-5 w-5 xs:h-6 xs:w-6 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+                      </svg>
+                      <span className="break-words">{error}</span>
+                    </div>
                   </div>
                 )}
 
                 {/* Formulaire */}
-                <div className="space-y-5">
+                <div className="space-y-4 xs:space-y-5">
                   {/* Email */}
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                    <label htmlFor="email" className="block text-sm xs:text-base font-semibold text-gray-700 dark:text-gray-200 mb-1.5 xs:mb-2">
                       Adresse Email <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Mail className="h-5 w-5 text-gray-400" />
+                        <Mail className="h-5 w-5 xs:h-6 xs:w-6 text-gray-400" />
                       </div>
                       <input
                         id="email"
@@ -514,19 +504,19 @@ export default function ConnexionPage() {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
+                        className="w-full pl-10 xs:pl-12 pr-3 xs:pr-4 py-2.5 xs:py-3 text-base xs:text-lg border border-gray-300 dark:border-slate-600 rounded-lg xs:rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 placeholder-gray-400 dark:placeholder-gray-500"
                       />
                     </div>
                   </div>
 
                   {/* Mot de passe */}
                   <div>
-                    <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                    <label htmlFor="password" className="block text-sm xs:text-base font-semibold text-gray-700 dark:text-gray-200 mb-1.5 xs:mb-2">
                       Mot de passe <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Lock className="h-5 w-5 text-gray-400" />
+                        <Lock className="h-5 w-5 xs:h-6 xs:w-6 text-gray-400" />
                       </div>
                       <input
                         id="password"
@@ -535,21 +525,22 @@ export default function ConnexionPage() {
                         value={form.password}
                         onChange={handleChange}
                         required
-                        className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
+                        className="w-full pl-10 xs:pl-12 pr-12 xs:pr-14 py-2.5 xs:py-3 text-base xs:text-lg border border-gray-300 dark:border-slate-600 rounded-lg xs:rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 placeholder-gray-400 dark:placeholder-gray-500"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200"
+                        className="absolute inset-y-0 right-0 pr-3 xs:pr-4 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-200 touch-target"
+                        aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                       >
-                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        {showPassword ? <EyeOff className="h-5 w-5 xs:h-6 xs:w-6" /> : <Eye className="h-5 w-5 xs:h-6 xs:w-6" />}
                       </button>
                     </div>
 
                     <div className="text-right mt-2">
                       <Link
                         href="/reset-password"
-                        className="text-sm font-semibold text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors duration-200"
+                        className="text-xs xs:text-sm font-semibold text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors duration-200"
                       >
                         Mot de passe oublié ?
                       </Link>
@@ -561,71 +552,81 @@ export default function ConnexionPage() {
                     type="button"
                     onClick={handleSubmit}
                     disabled={isLoading}
-                    className={`w-full py-4 rounded-xl font-bold text-white transition-all duration-300 ease-in-out ${
+                    className={`w-full py-3 xs:py-4 rounded-lg xs:rounded-xl font-bold text-base xs:text-lg text-white transition-all duration-300 ease-in-out active:scale-[0.98] ${
                       isLoading
                         ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
                         : 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:scale-[1.02] hover:shadow-lg'
                     }`}
                   >
-                    {isLoading ? 'Connexion...' : 'Se connecter'}
+                    {isLoading ? (
+                      <span className="flex items-center justify-center">
+                        <svg className="animate-spin h-5 w-5 xs:h-6 xs:w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Connexion...
+                      </span>
+                    ) : (
+                      'Se connecter'
+                    )}
                   </button>
                 </div>
 
                 {/* Ligne de séparation "OU" */}
-                <div className="flex items-center my-6">
+                <div className="flex items-center my-4 xs:my-6">
                   <div className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></div>
-                  <span className="px-4 text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">OU</span>
+                  <span className="px-3 xs:px-4 text-xs xs:text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">OU</span>
                   <div className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></div>
                 </div>
 
                 {/* Connexion Google */}
                 <button
                   type="button"
-                  className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-700 transition duration-300 ease-in-out shadow-sm hover:shadow-md transform hover:scale-[1.01]"
+                  className="w-full flex items-center justify-center gap-2 xs:gap-3 py-2.5 xs:py-3 border border-gray-300 dark:border-slate-600 rounded-lg xs:rounded-xl bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-slate-700 transition duration-300 ease-in-out shadow-sm hover:shadow-md transform hover:scale-[1.01] active:scale-[0.99]"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 xs:h-6 xs:w-6" viewBox="0 0 24 24" fill="none">
                     <path d="M12 4.5c1.67 0 3.17.59 4.35 1.57l3.23-3.23C17.88.96 15.1 0 12 0 7.29 0 3.22 2.69 1.28 6.65l3.76 2.92C6 6.34 8.77 4.5 12 4.5Z" fill="#EA4335"/>
                     <path d="M23.64 12.27c0-.82-.07-1.42-.22-2.04H12v3.87h6.68c-.13 1.02-.84 2.56-2.42 3.59l3.75 2.9c2.2-2.03 3.63-5.03 3.63-8.32Z" fill="#4285F4"/>
                     <path d="M5.04 14.73A7.46 7.46 0 0 1 4.5 12c0-.95.17-1.87.53-2.73L1.28 6.65C.46 8.32 0 10.17 0 12c0 1.83.46 3.68 1.28 5.35l3.76-2.92Z" fill="#FBBC05"/>
                     <path d="M12 24c3.1 0 5.88-1.02 7.84-2.75l-3.75-2.9c-1.01.68-2.33 1.15-4.09 1.15-3.23 0-6-1.84-7.23-4.42l-3.76 2.92C3.22 21.31 7.29 24 12 24Z" fill="#34A853"/>
                   </svg>
-                  <span className="font-semibold">Continuer avec Google</span>
+                  <span className="font-semibold text-sm xs:text-base">Continuer avec Google</span>
                 </button>
 
                 {/* Boutons sociaux */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 xs:gap-3 mt-3 xs:mt-4">
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition duration-300 ease-in-out transform hover:scale-[1.02] shadow-sm hover:shadow-md"
+                    className="flex items-center justify-center gap-1.5 xs:gap-2 py-2.5 xs:py-3 rounded-lg xs:rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md text-sm xs:text-base font-medium"
                   >
-                    <Facebook className="h-5 w-5" />
-                    <span className="text-sm font-medium hidden sm:inline">Facebook</span>
+                    <Facebook className="h-4 w-4 xs:h-5 xs:w-5" />
+                    <span className="hidden sm:inline">Facebook</span>
                   </button>
 
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white transition duration-300 ease-in-out transform hover:scale-[1.02] shadow-sm hover:shadow-md"
+                    className="flex items-center justify-center gap-1.5 xs:gap-2 py-2.5 xs:py-3 rounded-lg xs:rounded-xl bg-blue-700 hover:bg-blue-800 text-white transition duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md text-sm xs:text-base font-medium"
                   >
-                    <Linkedin className="h-5 w-5" />
-                    <span className="text-sm font-medium hidden sm:inline">LinkedIn</span>
+                    <Linkedin className="h-4 w-4 xs:h-5 xs:w-5" />
+                    <span className="hidden sm:inline">LinkedIn</span>
                   </button>
 
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-800 hover:bg-black text-white transition duration-300 ease-in-out transform hover:scale-[1.02] shadow-sm hover:shadow-md"
+                    className="flex items-center justify-center gap-1.5 xs:gap-2 py-2.5 xs:py-3 rounded-lg xs:rounded-xl bg-gray-800 hover:bg-black text-white transition duration-300 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md text-sm xs:text-base font-medium"
                   >
-                    <Github className="h-5 w-5" />
-                    <span className="text-sm font-medium hidden sm:inline">GitHub</span>
+                    <Github className="h-4 w-4 xs:h-5 xs:w-5" />
+                    <span className="hidden sm:inline">GitHub</span>
                   </button>
                 </div>
 
                 {/* Lien inscription */}
-                <div className="mt-6 text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="mt-4 xs:mt-6 text-center">
+                  <p className="text-xs xs:text-sm text-gray-600 dark:text-gray-400">
                     Pas encore de compte ?{' '}
                     <Link
                       href="/Inscription"
-                      className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-80 transition-opacity duration-200"
+                      className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-80 transition-opacity duration-200 underline-offset-2 hover:underline"
                     >
                       Inscrivez-vous ici
                     </Link>
