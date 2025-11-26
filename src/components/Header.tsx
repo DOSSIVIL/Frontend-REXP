@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
-  Search, Globe, TrendingUp, FileText, Menu, X, Home, Eye, MoreHorizontal, LogIn, UserPlus
+  Search, Globe, TrendingUp, FileText, Menu, X, Home, Eye, MoreHorizontal, LogIn, UserPlus, Moon, Sun
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -166,7 +166,7 @@ const Header: React.FC = () => {
               </nav>
             </div>
 
-            {/* Section droite (Recherche, IA, Auth) */}
+            {/* Section droite (Recherche, Dark Mode, IA, Auth) */}
             <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
 
               {/* Barre de recherche (Améliorée et Responsive) */}
@@ -204,6 +204,26 @@ const Header: React.FC = () => {
                 </div>
               </div>
 
+              {/* Bouton Dark Mode */}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`relative flex items-center justify-center group flex-shrink-0 p-2.5 rounded-xl transition-all duration-300 hover:scale-110 ${
+                  isDarkMode
+                    ? 'bg-slate-800/50 text-yellow-400 hover:bg-slate-700/50'
+                    : 'bg-gray-100/80 text-gray-700 hover:bg-gray-200/80'
+                } focus:outline-none focus:ring-2 focus:ring-blue-500/70 shadow-md hover:shadow-xl`}
+                aria-label={isDarkMode ? 'Activer le mode clair' : 'Activer le mode sombre'}
+              >
+                <div className={`absolute -inset-1 rounded-xl opacity-0 group-hover:opacity-20 blur transition-all duration-300 ${
+                  isDarkMode ? 'bg-yellow-400' : 'bg-slate-700'
+                }`}></div>
+                {isDarkMode ? (
+                  <Sun className="h-5 w-5 relative z-10 transform group-hover:rotate-180 transition-transform duration-500" />
+                ) : (
+                  <Moon className="h-5 w-5 relative z-10 transform group-hover:-rotate-12 transition-transform duration-500" />
+                )}
+              </button>
+
               {/* Avatar IA (Animation conservée) */}
               <button
                 onClick={() => setIsWelcomeOpen(true)}
@@ -232,7 +252,6 @@ const Header: React.FC = () => {
                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-700 to-pink-600 opacity-100 group-hover:opacity-0 transition-all duration-300"></div>
                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
                  <span className="relative text-white flex items-center justify-center space-x-1 drop-shadow-sm">
-                    <LogIn className='h-4 w-4 hidden lg:block'/>
                     <span>Connexion</span>
                  </span>
                </Link>
@@ -296,7 +315,7 @@ const Header: React.FC = () => {
                 className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-slate-800' : 'hover:bg-gray-100'} transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/70`}
                 aria-label="Fermer le menu mobile"
               >
-                <X className="h-6 w-6 text-gray-700" />
+                <X className={`h-6 w-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`} />
               </button>
             </div>
 
@@ -328,6 +347,30 @@ const Header: React.FC = () => {
                   aria-label="Recherche mobile"
                 />
               </div>
+            </div>
+
+            {/* Bouton Dark Mode Mobile */}
+            <div className="px-4 pb-3">
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`w-full flex items-center justify-center space-x-3 py-3 rounded-xl transition-all duration-300 ${
+                  isDarkMode
+                    ? 'bg-slate-800/80 text-yellow-400 hover:bg-slate-700/80'
+                    : 'bg-gray-100/80 text-gray-700 hover:bg-gray-200/80'
+                } font-medium shadow-md`}
+              >
+                {isDarkMode ? (
+                  <>
+                    <Sun className="h-5 w-5" />
+                    <span>Mode Clair</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="h-5 w-5" />
+                    <span>Mode Sombre</span>
+                  </>
+                )}
+              </button>
             </div>
 
             {/* Boutons de connexion mobile */}
@@ -410,6 +453,7 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
+
       )}
     </>
   );
